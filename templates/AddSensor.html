@@ -1,0 +1,92 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<head>
+  <script>
+    function number(){
+      var pin = "<option value='0'>select</option>";
+      for (var i = 1; i<=20; i++) {
+          pin += "<option value='"+i+"'>"+i+"</option>"
+      }
+
+      document.getElementById('inputText').innerHTML = pin;
+    }
+    </script>
+</head>
+  <main id="main" class="main">
+    <body onload="number()">
+    <div class="pagetitle">
+      <h1>Add Sensor</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item">Sensors</li>
+          <li class="breadcrumb-item active">Add Sensor</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Add Sensor Details</h5>
+
+              <!-- General Form Elements -->
+              <form action="{{url_for('addrec')}}" method="POST">
+
+                <div class="row mb-3">
+                  <label for="inputText">Pin Number</label>
+                  <div class="col-sm-10">
+                      <select name="inputText" id="inputText"></select>
+                  </div>
+                </div>
+                <div class="row mb-1">
+                  <label for="inputEmail">Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="desc" class="form-control">
+                  </div>
+                </div>
+                <div class="row mb-1">
+                  <label for="inputEmail">Message for ON sensor</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="on" class="form-control">
+                  </div>
+                </div>
+                <div class="row mb-1">
+                  <label for="inputEmail">Message for OFF sensor </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="off" class="form-control">
+                  </div>
+                </div>
+                <div class="row mb-1">
+                  <label for="inputPassword">State</label>
+                  <div class="col-sm-10">
+                    <select name="inputPassword" id="inputPassword">
+                      <option value="ON">ON</option>
+                        <option value ="OFF">OFF</option>
+                      </select>
+                  </div>
+                </div>
+
+              </br>
+                <div class="row mb-1">
+                  <label for="submission"></label>
+                  <div class="col-sm-10">
+                    <input type="submit" id="submission">
+                  </div>
+                </div>
+
+
+              </form><!-- End General Form Elements -->
+
+            </div>
+
+        </div>
+      </div>
+    </section>
+  </main><!-- End #main -->
+
+  {% endblock %}
