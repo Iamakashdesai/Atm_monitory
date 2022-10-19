@@ -1,0 +1,270 @@
+
+{% extends 'layout.html' %}
+{% block body %}
+
+
+
+
+
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard </li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+
+
+
+            
+
+
+              <div id="update" class="col-xxl-4 col-md-6">
+                <div class="card info-card revenue-card">
+
+                  <div class="filter">
+                    <a class="icon" href="#" ></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                      <li class="dropdown-header text-start">
+                      
+                      </li>
+
+              
+                    </ul>
+                  </div>
+
+                  <div class="card-body">
+                    <h5 class="card-title">Person Count</h5>
+
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="ri-body-scan-fill"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6>{{x}}</h6>
+                        <!-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div><!-- End Revenue Card -->
+
+
+
+
+ 
+  
+
+
+
+
+            
+         
+
+
+
+            
+
+            {% for key,value in sensor.items() %}
+            <!-- Sales Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" ></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                    </li>
+
+
+                  </ul>
+                </div>
+ {%    if value['Type']== 'Smoke Sensor' %}
+                <div class="card-body">
+                  <h5 class="card-title">{{ value['Name'] }}         </h5>
+
+
+
+                  <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center justify-content-center">
+                      <i class="fas fa-podcast"></i>
+                    </div>
+                    <div class="ps-3" >
+                            {% if value["State"] == 1%}
+                              <div class="alert alert-secondary alert-dismissible fade show" role="alert">       
+                                <h6   id="{{ value['Name'] }}"> {{value["Onmsg"]}} </h6></div>
+                            {% else %}
+                              <div class="alert alert-info alert-dismissible fade show" role="alert">    
+                                <h6  id="{{ value['Name'] }}">  {{value["Offmsg"]}} </h6></div>
+                            {% endif %}
+                 
+
+
+                            <button   class="btn btn-secondary"    type="submit" onclick='onClick()'>Reset</button>
+
+                            
+        
+        
+                
+                    </div>
+
+                  </div>
+                </div>
+
+{% else %}
+                  <div class="card-body">
+                    <h5 class="card-title">{{ value['Name'] }}</h5>
+                  
+                    <div class="d-flex align-items-center">
+                      <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-podcast"></i>
+                      </div>
+                      <div class="ps-3" >
+                             {% if value["State"] == 0 %}
+                              <div class="alert alert-secondary alert-dismissible fade show" role="alert">   
+                                 <h6   id="{{ value['Name'] }}"> {{value["Onmsg"]}} </h6></div>
+                             {% else %}
+                             <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                 <h6  id="{{ value['Name'] }}">  {{value["Offmsg"]}} </h6></div>
+                             {% endif %}
+                   
+                  
+                  
+                      </div>
+                    </div>
+                  </div>
+                  
+                  
+
+
+
+
+
+
+
+
+
+                {%    endif  %}
+              </div>
+            </div><!-- End Sales Card -->
+
+            {% endfor %}
+
+
+
+
+          </div>
+        </div><!-- End Left side columns -->
+
+
+
+
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  {% endblock %}
+  {% block js %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script>
+  function onClick(){
+                console.log("click called");
+    $.ajax({
+                        
+      url:"/on",
+      context: document.body});}
+</script>
+
+            <script>
+          
+              $(function(){
+                window.setInterval(function(){
+                  load()
+                },1000)  
+              
+              function load(){
+                  $.ajax({
+                      url:"/update",
+                      type: "POST",
+                      dataType: "json",
+                      success: function(data){
+                          $(update).replaceWith(data)
+              
+                      }
+                  });
+              } 
+              });
+              </script>
+	<script>
+		$(function(){
+			window.setInterval(function(){
+				update()
+			},1000)
+		function update(){
+			$.ajax({
+				url:"/update_sensor_status",
+				type: "POST",
+				dataType: "json",
+				success:function(data){
+
+					$.each(data, function(key,value)
+					{
+            if (value['Type'] == 'Smoke Sensor'){
+              if (value['State'] == 0){
+                var div_id = value['Name']
+                var msg = value['Offmsg']
+                $("#" + div_id ).html(msg);
+              }
+              else{
+                var div_id = value['Name']
+                var msg = value['Onmsg']
+                $("#" + div_id ).html(msg);
+              }
+            }
+            else{
+
+            
+            if (value['State'] == 0){
+              var div_id = value['Name']
+              var msg = value['Onmsg']
+              $("#" + div_id ).html(msg);
+            }
+            else{
+              var div_id = value['Name']
+              var msg = value['Offmsg']
+              $("#" + div_id ).html(msg);
+            }
+          }
+     
+					});			
+			
+				}
+
+
+			});
+		}
+		});
+
+</script>
+
+{% endblock %}
+

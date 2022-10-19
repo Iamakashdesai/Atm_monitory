@@ -1,20 +1,55 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+
 <head>
-  <script>
-    function number(){
+
+
+  <!-- <script>
+    function number() {
       var pin = "<option value='0'>select</option>";
-      for (var i = 1; i<=20; i++) {
-          pin += "<option value='"+i+"'>"+i+"</option>"
+      for (var i = 1; i <= 24; i++) {
+        pin += "<option value='" + i + "'>" + i + "</option>"
       }
 
-      document.getElementById('inputText').innerHTML = pin;
+      var el = document.getElementById('inputText');
+      // el.innerHTML = pin
+
+
+      var pin2 = "<option value='0'>select</option>";
+      for (var i = 1; i <= 4; i++) {
+        pin2 += "<option value='" + i + "'>" + i + "</option>"
+      }
+
+      var el1 = document.getElementById('inputText2');
+      // el1.innerHTML = pin2
+
+
+      var pin3 = "<option value='0'>select</option>";
+      for (var i = 1; i <= 24; i++) {
+        pin3 += "<option value='" + i + "'>" + i + "</option>"
+      }
+
+      var el1 = document.getElementById('inputText3');
+      el1.innerHTML = pin3
+
+
+
+
     }
-    </script>
+
+
+  </script> -->
+
+
+
+
+
+
 </head>
-  <main id="main" class="main">
-    <body onload="number()">
+<main id="main" class="main">
+
+  <body onload="number()">
     <div class="pagetitle">
       <h1>Add Sensor</h1>
       <nav>
@@ -26,67 +61,133 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section">
+    <section class="addsensor">
       <div class="row">
-        <div class="col-lg-6">
-
+        <div class="col-lg-12">
+          
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Add Sensor Details</h5>
 
               <!-- General Form Elements -->
-              <form action="{{url_for('addrec')}}" method="POST">
+              <form action="{{url_for('Sensor')}}" method="POST">
+                <div class="mb-3">
+                  <input class="form-check-input" TYPE=RADIO NAME="X" VALUE="Normal Sensor" onclick="show1();"  required/><span>Normal
+                    Sensor</span> 
+                  <input class="form-check-input ms-5" TYPE=RADIO NAME="X" VALUE="Smoke Sensor" onclick="show();" /> <span>Smoke
+                    Sensor</span> 
+                </div>
 
-                <div class="row mb-3">
-                  <label for="inputText">Pin Number</label>
+                <!-- <select class="form-select" aria-label="Default select example"><option selected="">        -->
+
+                <div id='div1' class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">GPIO Pin Number</label>
                   <div class="col-sm-10">
-                      <select name="inputText" id="inputText"></select>
+                    <select class="form-select" aria-label="Default select example" name="inputText"
+                      id="inputText">
+                      <option >Select</option>
+                      {% for key,val in gpio_pin.items() %}
+                      
+                      <option value={{key}}>{{key}}</option>
+
+                      {% endfor %}
+                    </select>
                   </div>
                 </div>
-                <div class="row mb-1">
-                  <label for="inputEmail">Name</label>
+
+                <div id='div2' class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">Voltage Pin</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" aria-label="Default select example" name="inputText2"
+                      id="inputText2">
+                      <option >None</option>
+
+                      {% for key,val in voltage_pins.items() %}
+                      <option value={{key}}>{{key}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+
+                <div id='div3' class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">Relay Pin</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" aria-label="Default select example" name="inputText3"
+                      id="inputText3" >
+                      
+                      <option >None</option>
+
+                      {% for key,val in relay_pins.items() %}
+                      <option value={{key}}>{{key}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="inputEmail" class="col-sm-2 col-form-label">Name</label>
                   <div class="col-sm-10">
                     <input type="text" name="desc" class="form-control">
                   </div>
                 </div>
-                <div class="row mb-1">
-                  <label for="inputEmail">Message for ON sensor</label>
+                <div class="row mb-3">
+                  <label for="inputEmail" class="col-sm-2 col-form-label">ON Message</label>
                   <div class="col-sm-10">
                     <input type="text" name="on" class="form-control">
                   </div>
                 </div>
-                <div class="row mb-1">
-                  <label for="inputEmail">Message for OFF sensor </label>
+                <div class="row mb-3">
+                  <label for="inputEmail" class="col-sm-2 col-form-label">OFF Message</label>
                   <div class="col-sm-10">
                     <input type="text" name="off" class="form-control">
                   </div>
                 </div>
-                <div class="row mb-1">
-                  <label for="inputPassword">State</label>
+                <div class="row mb-3">
+                  <label for="inputPassword" class="col-sm-2 col-form-label">State</label>
                   <div class="col-sm-10">
                     <select name="inputPassword" id="inputPassword">
                       <option value="ON">ON</option>
-                        <option value ="OFF">OFF</option>
-                      </select>
+                      <option value="OFF">OFF</option>
+                    </select>
                   </div>
                 </div>
 
-              </br>
+                </br>
                 <div class="row mb-1">
                   <label for="submission"></label>
                   <div class="col-sm-10">
-                    <input type="submit" id="submission">
+                    <!-- <input type="submit" id="submission"> -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
                   </div>
                 </div>
 
 
               </form><!-- End General Form Elements -->
 
+
+
+
+              <script>
+                function show() {
+                  document.getElementById('inputText').style.display = 'block';
+                  document.getElementById('div2').style.display = 'flex';
+
+                  document.getElementById('div3').style.display = 'flex';
+                }
+                function show1() {
+                  document.getElementById('inputText').style.display = 'block';
+                  document.getElementById('div2').style.display = 'none';
+                  document.getElementById('div3').style.display = 'none';
+
+                }
+
+              </script>
             </div>
 
+          </div>
         </div>
-      </div>
     </section>
-  </main><!-- End #main -->
+</main><!-- End #main -->
 
-  {% endblock %}
+{% endblock %}

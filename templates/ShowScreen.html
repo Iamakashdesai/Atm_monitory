@@ -1,7 +1,14 @@
 {% extends 'layout.html' %}
 {% block body %}
 
-  <main id="main" class="main">
+
+
+<main id="main" class="main">
+
+   
+
+  
+
 
     <div class="pagetitle">
       <h1>Show Screen</h1>
@@ -14,14 +21,81 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <script>
+  
+      $(function(){
+        window.setInterval(function(){
+          load()
+        },1000)  
+      
+      function load(){
+          $.ajax({
+              url:"/update2",
+              type: "POST",
+              dataType: "json",
+              success: function(data){
+                  $(update2).replaceWith(data)
+      
+              }
+          });
+      } 
+      });
+      </script>
+  
+  
+  
+  <div id="update2" class="col-xxl-4 col-md-6">
+    <div class="card info-card revenue-card">
+  
+      <div class="filter">
+        <a class="icon" href="#" ></a>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+          <li class="dropdown-header text-start">
+          
+          </li>
+  
+  <!--                    <li><a class="dropdown-item" href="#">Today</a></li>-->
+  <!--                    <li><a class="dropdown-item" href="#">This Month</a></li>-->
+  <!--                    <li><a class="dropdown-item" href="#">This Year</a></li>-->
+        </ul>
+      </div>
+  
+      <div class="card-body">
+        <h5 class="card-title">Person Count</h5>
+  
+        <div class="d-flex align-items-center">
+          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+            <i class="fab fa-gripfire"></i>
+          </div>
+          <div class="ps-3">
+            <h1>{{x}}</h1>
+            <!-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+  
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </div><!-- End Revenue Card -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <div class="loader">
+    <div></div>
+  </div>
+
+    <section class="screen1">
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
 
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Screen</h5>
               <div>
+                
 
                 <img src="{{ url_for('Video') }}" width="100%"/>
               </div>
@@ -29,15 +103,15 @@
             </div>
           </div>
 
-        </div>
-
-        
-
-          
-
-        
+        </div> 
       </div>
     </section>
+    <script>
+      $(window).on('load',function(){
+          $(".loader").fadeOut(1000);
+          $(".screen1").fadeIn(1000);
+      });
+  </script>
 
   </main><!-- End #main -->
 
